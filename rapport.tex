@@ -140,6 +140,7 @@
 		\subsubsection{Socket}
 		Klass som abstraherar skickande och mottagande av meddelanden. Man kan skicka meddelanden ett och ett eller fylla en buffert med flera meddelande som kan skickas som ett meddelande.
 		
+		\newpage
 		\subsubsection{Thread}
 		Var ansluten klient får en egen tråd av serverns main funktion. Klassen Thread tar emot inkommande trafik från klienter och behandlar detta. Svarar sedan med ett unicast/multicast meddelande. Detta blockerar tråden för inkommande trafik men det spelar ingen roll då inkommande meddelanden sker i sekvens.
 		
@@ -150,8 +151,22 @@
 		Klass som används för att skapa de meddelanden som servern skickar ut. Vid instansiering anger man id-nummer till konstruktorn så att de meddelanden som skapas har korrekt id. 
 		
 		\subsection{Kryptering}
+		All kommunikation mellan server och klient krypteras med RC4.
+		\subsubsection{EncryptionEngine}
+		Klassens uppgift är att möjliggöra asynkron kryptering/dekryptering. Detta uppnås genom att skilja på in och ut krypterings-strömmar. När något skall krypteras används ut-strömmen och in-strömmen används vid dekryptering. Strömmarna når man via två instanser av klassen PRGA. 
 		
+		\subsubsection{PRGA} 
+		Vid instansiering anges nyckel och nyckellängd. Därefter skapas en array med alla chars från 0 till 255. Denna array 'kastas om' med avseende på nyckeln.\\\\Man får nu tillgång till en metod som rör om ytterligare i förutnämnda array och returnerar en char med värde 0 till 255. Kör man XOR på denna char och en in/ut gående char så krypteras/dekrypterar man meddelandet.
+		
+	\newpage
 	\section{Diskussion}%behandlar dina åsikter om Laborationen och vad du lärt dig.
+	Laborationen var kul och lärorik. Kommer definitivt att ha nytta av det jag lärt mig. Jag hade fått intrycket att nätverksprogrammeringen i c/c++ skulle vara jättesvår men jag tycker nog att det gick ganska bra. Det blir mer kod att skriva men man får lite mer insikt i hur det fungerar jämfört med java t.ex.\\\\Det var bra att man fick en server man kunde testa mot i början. 
+	
+	\subsection{Klient}
+	Jag stötte på en hel del problem när jag utformade klienten men dessa problem var till största del relaterade till hur man får C++ att kompilera tillsammans med Objective-C.\\\\Från början så skrev jag Objective-C(GUI/UI) och C++(Network/Mechanic) delarna var för sig. Detta gick utan problem tills dess att jag behövde en instans av ett Objective-C objekt som medlem i en C++ klass.\\\\Min lösning till problemet var att skriva deklarationer i Objective-C men implementeringen är i C++.
+	
+	\subsection{Server}
+	Att programmera servern gick ganska snabbt med tanke på att applikations-protokollet redan var klart på klienten. Stötte på några triviala problem angående synkronisering av modellen.
   
     
 \end{document}
