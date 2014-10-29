@@ -91,16 +91,30 @@
 		All kommunikation skulle krypteras enligt RC4.
 		 
 	
+
+	\newpage	
 	\section{Metod}%hur har du gått tillväga för att lösa uppgiften, beskriv design. 
-		\subsection{Klient} %delegat mönster. beskriv kort ios.
-		\subsection{Server} %simpel non blocking multithreaded server... synkroniserad kollision
-			\subsubsection{Trådar}
-			
-		\subsection{Kryptering}
+	Jag har använt laboration 3 som mall över vilka delar som skall finnas i applikationen samt hur dessa skall kommunicera med varandra. 
+	
+		\subsection{Berkeley Sockets}	
+		Med Java's Socket-klass som förebild tänkte jag designa en klass som abstraherar det mesta av denna API för att göra det smidigt för övriga delar i applikationen att sända/ta-emot data. 
 		
+		\subsection{Klient} %delegat mönster. beskriv kort ios.
+		Klienten är en iOS-applikation och är därför skriven i både Objective-C och C++. När man använder sig av C++ i iOS applikationer är det bra att 'wrappa' C++ koden i Objective-C syntax för att göra det enkelt för sig. Detta medför vissa prestanda förluster gentemot ren C++ eller ren Objective-C men i denna laboration har det varit försumbart.
+		
+		\subsection{Server} %simpel non blocking multithreaded server... synkroniserad kollision
+		Servern är designad för att kunna ta emot flera klienter och detta sker genom användandet av trådar. Serverns modell skickas till varje tråd och åtkomst till denna sker synkroniserat så att kollision och dylikt ska flyta på bra.
+				
+	\newpage
 	\section{Resultat}%hur är koden uppdelad, finns det speciellt svåra detaljer eller bra lösningar.
 		\subsection{Klient}
+		\begin{center}
+			\includegraphics[scale=.2]{./png/ClientClassDiagram.png}			
+		\end{center}
 		\subsection{Server}
+		\begin{center}
+			\includegraphics[scale=.2]{./png/ServerClassDiagram.png}			
+		\end{center}
 		
 	\section{Diskussion}%behandlar dina åsikter om Laborationen och vad du lärt dig.
   
