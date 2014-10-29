@@ -89,8 +89,6 @@
 
 		\subsection{Krypterad trafik med RC4}
 		All kommunikation skulle krypteras enligt RC4.
-		 
-	
 
 	\newpage	
 	\section{Metod}%hur har du gått tillväga för att lösa uppgiften, beskriv design. 
@@ -111,10 +109,47 @@
 		\begin{center}
 			\includegraphics[scale=.2]{./png/ClientClassDiagram.png}			
 		\end{center}
+		\subsubsection{GameSocket}
+		Innehåller metoder för att skicka och ta emot meddelanden av given form. Abstraherar berkeley socket APIn till för att göra det enkelt för ägare att använda klassen. Har en EncryptionEngine medlem som krypterar/dekrypterar alla meddelanden som passerar.
+		\subsubsection{GameThreadOut}
+		Tråd som sköter skickande av meddelanden till servern. När spelaren trycker på en punkt på skärmen så kommer denna tråd att skicka MoveEvent's tills dess att spelaren hamnar på denna position. I iOS måste main-tråden vara ledig för användning ty det är den som måste användas om någonting skall ritas på skärmen annars hade man kunnit låta main-tråden sköta alla ut-meddelanden.
+		
+		\newpage
+		\subsubsection{GameThread}
+		Lyssnar-tråd som delegerar mottaget meddelande till GameManager klassen.
+		\subsubsection{GameManager}
+		Delegat till GameThread. Initierar trådar och delegerar inkomna meddelanden till GameViewController.
+		\subsubsection{GameViewController}
+		Delegat till GameManager, klass som tar input från användaren och ritar ut spelarna på skärmen. Denna klass ärver från apple's (UIKit framework) UIViewController och  måste användas om man skall göra en iOS-applikation.
+		
+		\newpage
 		\subsection{Server}
 		\begin{center}
 			\includegraphics[scale=.2]{./png/ServerClassDiagram.png}			
 		\end{center}
+		\subsubsection{ServerSocket}
+		När man instansierar en ServerSocket måste man ange det port-nummer man vill starta servern på i konstruktorn. Är angivet portnummer ledigt så kommer ServerSocket att köra:
+			\begin{enumerate}
+				\item getAddrInfo(): För att ta reda på vilken adress som servern befinner sig på.
+				\item socket(): För att få ett socket file descriptor nummer som resterande metoder hänvisar till.
+				\item bind(): För att binda till en adress, detta måste man göra för att kunna köra accept().
+				\item listen(): Förbereder socket för inkommande trafik.
+			\end{enumerate}
+			
+		När man nu har en ServerSocket så finns en metod ServerSocket::accept() som returnerar en Socket när en klient har anslutit.
+		\subsubsection{Socket}
+		Klass som abstraherar skickande och mottagande av meddelanden. Man kan skicka meddelanden ett och ett eller fylla en buffert med flera meddelande som kan skickas som ett meddelande.
+		
+		\subsubsection{Thread}
+		Var ansluten klient får en egen tråd av serverns main funktion. Klassen Thread tar emot inkommande trafik från klienter och behandlar detta. Svarar sedan med ett unicast/multicast meddelande. Detta blockerar tråden för inkommande trafik men det spelar ingen roll då inkommande meddelanden sker i sekvens.
+		
+		\subsubsection{GameModel}
+		Instansierad i main-funktionen på servern och delges till varje tråd så att de delar samma modell. Har metoder för att lägga till / ta bort / flytta spelare samt validera dessa. Åtgång till denna instans sker synkroniserat med hjälp av en mutex(Mutual Exclusion) referens.
+		
+		\subsubsection{MsgFactory}
+		Klass som används för att skapa de meddelanden som servern skickar ut. Vid instansiering anger man id-nummer till konstruktorn så att de meddelanden som skapas har korrekt id. 
+		
+		\subsection{Kryptering}
 		
 	\section{Diskussion}%behandlar dina åsikter om Laborationen och vad du lärt dig.
   
