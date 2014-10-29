@@ -77,10 +77,18 @@
 	\setlength{\parskip}{10pt}
 
 	\section{Introduktion} %beskriv syftet med uppgiften och vad det är tänkt att du ska lära dig.
+	Uppgiften var att programmera ett enkelt nätverksspel med klient och server i C/C++.
+	
 		\subsection{Klient}
+		Klienten skulle ha ett grafiskt användargränssnitt som ritar ut spelare som befinner sig på servern. Man skulle kunna flytta runt sin spelare men bara inom ett givet område samt skulle kollision med andra spelare förekomma.
 		\subsection{Server}
-		\subsection{Berkley Sockets}
+		Serverns uppgift var att godkänna förfrågningar från klienter angående förflyttningar samt delge kommandon från en klient till flera.
+		
+		\subsection{Berkeley Sockets}
+		API som skulle användas för kommunikation mellan server och klienter.
+
 		\subsection{Krypterad trafik med RC4}
+		All kommunikation skulle krypteras enligt RC4.
 		 
 	
 	\section{Metod}%hur har du gått tillväga för att lösa uppgiften, beskriv design. 
